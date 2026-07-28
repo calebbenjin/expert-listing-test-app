@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expert Listing — Dashboard
 
-## Getting Started
+A recreation of the Expert Listing admin dashboard from Figma, built as a frontend take-home assessment.
 
-First, run the development server:
+## Running the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The Dashboard is the only fully built page; the other nav items (Listings, Users, Request, Applications, Tasks) render lightweight placeholder pages so the navigation doesn't feel broken.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm build && pnpm start   # production build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Stack
 
-## Learn More
+- **Next.js 16 (App Router) + React 19 + TypeScript**
+- **Tailwind CSS v4** with a custom oklch design-token palette (pine green, mint, blue-violet, success/warning/danger, stat-highlight yellow) layered on top of the existing shadcn "base-nova" scaffold
+- **shadcn/ui on Base UI** (`@base-ui/react`) for primitives (Button, Card, Avatar, etc.) — this repo's scaffold uses Base UI instead of Radix, so new primitives were pulled via the shadcn CLI to match
+- **TanStack Query** for data fetching against real Next.js Route Handlers under `src/app/api/dashboard/*`, rather than importing static mock objects directly into components — this gives genuine loading/error/retry states instead of data that's just always there
+- **Recharts** for the Sales Overview bar chart, dynamically imported with `ssr: false` since it depends on the DOM
+- **Framer Motion** used sparingly: the shared-layout active-tab indicator in the primary nav, and the mobile drawer's slide/fade transition. Everything else (card hover, buttons, links) is plain CSS transitions — animating everything makes nothing feel important
 
-To learn more about Next.js, take a look at the following resources:
+## Architecture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/
+    (dashboard)/          # layout shell (header + nav + mobile drawer) and all pages
+    api/dashboard/        # mock Route Handlers (artificial delay, real JSON responses)
+  components/
+    ui/                    # shadcn primitives
+    layout/                # header, nav, mobile drawer, shared page-placeholder
+    dashboard/              # Sales Overview, overview summary cards, spotlight carousel, skeletons
+  hooks/queries/            # TanStack Query hooks, one per endpoint
+  lib/                      # cn, currency/number formatting, query client
+  mock/                     # seed data returned by the API routes
+  types/                    # shared dashboard types
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+State management is plain `useState`/URL — Zustand was intentionally **not** added. Nothing in this build needs state shared across more than one parent/child level (the mobile drawer's open state lives in the layout that owns both the trigger and the drawer), so introducing a store would be complexity without benefit.
 
-## Deploy on Vercel
+## Responsive behaviour
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+There were no tablet/mobile frames in the Figma file, so the breakpoints below are my own design decisions, not a shrink of the desktop layout:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Desktop (≥1024px)**: matches Figma — horizontal pill nav, 2-column main grid, 3-up spotlight row.
+- **Tablet / mobile (<1024px)**: the horizontal nav is replaced by a hamburger-triggered slide-in drawer (a different interaction, not a squeezed version of the same one); the two-column grid stacks; the spotlight row becomes a horizontal scroll-snap swipe carousel on narrow screens instead of the desktop's chevron-button carousel, since touch users scroll rather than click small arrow buttons.
+
+## Assumptions & trade-offs
+
+- **Scope**: only the Dashboard screen was built out fully, per the brief's own emphasis on depth/quality over breadth. The other five nav destinations get a real (if minimal) page rather than a dead link.
+- **Mock data, real async boundary**: all dashboard data is static, but it's served through actual Route Handlers with a simulated network delay, so loading skeletons and error/retry states are real code paths, not decoration.
+- **Chart range toggle**: the "1 Week / 1 Month / 1 Year" control is fully interactive (it switches the active pill), but all three ranges render the same year-of-data mock, since there was no source data for week/month granularity and fabricating three internally-consistent datasets didn't seem worth the complexity for a static demo.
+- **Spotlight pagination dots**: rendered to match the design but are decorative — each card has a single source image in the mock, so there's nothing to page through yet.
+- **Images**: the three spotlight photos are placeholder building/architecture photography from Lorem Picsum (`picsum.photos`), served through `next/image` with explicit `sizes` for responsive loading.
+- **Currency formatting**: amounts are formatted as `₦` + `en-NG` locale grouping to match the Figma's Naira figures exactly (e.g. `₦120,000,000.00`).
