@@ -39,3 +39,4 @@ pnpm build && pnpm start   # production build
 
 - **Metadata** (`src/app/layout.tsx`): title template, description, keywords, and `robots: index, follow` via the App Router `Metadata` API. `metadataBase` is set to the Vercel deployment URL so relative OG/Twitter image paths resolve to absolute ones in production.
 - **Link preview image** (`src/app/opengraph-image.tsx`): generated at build time with `next/og`'s `ImageResponse` — the real header wordmark (`public/icons/expert-listing-logo.png`) on the app's own brand gradient, rather than a static placeholder graphic. Next.js wires this file into both `og:image` and `twitter:image` automatically, alongside `summary_large_image` Twitter Card metadata.
+- **Favicon & Apple touch icon** (`src/app/icon.tsx`, `src/app/apple-icon.tsx`): same `ImageResponse` approach, compositing the brand mark (`public/logo-icon.png`) onto the header's brand-green background, replacing Next.js's default placeholder favicon.
