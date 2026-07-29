@@ -25,7 +25,6 @@ pnpm build && pnpm start   # production build
 - **Framer Motion** used sparingly: the primary nav's active-tab indicator, the mobile drawer transition, and the spotlight carousel's image crossfade — not layered onto everything
 - **Open Runde** (self-hosted via `@fontsource/open-runde`) as the app typeface
 - Real icon and logo assets from `public/icons/` (Figma exports) rendered via `next/image`, rather than icon-library stand-ins
-- **No Zustand** — nothing in this build needs state shared beyond one parent/child level (e.g. the mobile drawer's open state lives in the layout that owns both the trigger and the drawer), so a store would add complexity without benefit
 
 ## Assumptions & trade-offs
 
@@ -35,3 +34,9 @@ pnpm build && pnpm start   # production build
 - **Chart range toggle**: "1 Week / 1 Month / 1 Year" is fully interactive, but all three ranges render the same year of mock data — there was no source data for week/month granularity, and fabricating three internally-consistent datasets wasn't worth the complexity for a static demo.
 - **Spotlight carousel**: each card carries two placeholder images (Lorem Picsum) so the prev/next controls and pagination dots have real images to switch between, with a crossfade transition.
 - **Currency formatting**: amounts are formatted as `₦` + `en-NG` locale grouping to match the Figma's Naira figures exactly (e.g. `₦120,000,000.00`).
+
+## SEO & link previews
+
+- **Metadata** (`src/app/layout.tsx`): title template, description, keywords, and `robots: index, follow` via the App Router `Metadata` API. `metadataBase` is set to the Vercel deployment URL so relative OG/Twitter image paths resolve to absolute ones in production.
+- **Link preview image** (`src/app/opengraph-image.tsx`): generated at build time with `next/og`'s `ImageResponse` — the real header wordmark (`public/icons/expert-listing-logo.png`) on the app's own brand gradient, rather than a static placeholder graphic. Next.js wires this file into both `og:image` and `twitter:image` automatically, alongside `summary_large_image` Twitter Card metadata.
+- **Favicon & Apple touch icon** (`src/app/icon.tsx`, `src/app/apple-icon.tsx`): same `ImageResponse` approach, compositing the brand mark (`public/logo-icon.png`) onto the header's brand-green background, replacing Next.js's default placeholder favicon.

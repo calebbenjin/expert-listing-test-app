@@ -13,9 +13,40 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = "Expert Listing | Dashboard";
+const description =
+  "Expert Listing admin dashboard — track sales, listings, and user activity at a glance.";
+
 export const metadata: Metadata = {
-  title: "Expert Listing | Dashboard",
-  description: "Expert Listing admin dashboard",
+  metadataBase: new URL("https://expert-listing-test-app.vercel.app"),
+  title: {
+    default: title,
+    template: "%s | Expert Listing",
+  },
+  description,
+  keywords: [
+    "Expert Listing",
+    "admin dashboard",
+    "sales overview",
+    "listings management",
+  ],
+  openGraph: {
+    title,
+    description,
+    url: "/",
+    siteName: "Expert Listing",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
