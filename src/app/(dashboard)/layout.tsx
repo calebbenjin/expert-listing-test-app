@@ -18,7 +18,7 @@ export default function DashboardLayout({
       <SiteHeader onMenuClick={() => setMenuOpen(true)} />
       <PrimaryNav />
       <MobileNavDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
-      <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+      <main className="flex-1 px-4 py-6 sm:w-11/12 lg:w-11/12 mx-auto lg:py-8">
         {children}
       </main>
     </div>
