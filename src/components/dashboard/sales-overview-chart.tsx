@@ -49,7 +49,7 @@ export default function SalesOverviewChart({
   data: SalesMonthDatum[];
 }) {
   return (
-    <ResponsiveContainer width="100%" height={260}>
+    <ResponsiveContainer width="100%" height={180}>
       <BarChart data={data} barGap={4} barCategoryGap="24%">
         <CartesianGrid vertical={false} stroke="var(--border)" />
         <XAxis
@@ -68,9 +68,9 @@ export default function SalesOverviewChart({
           cursor={{ fill: "var(--muted)" }}
           content={<ChartTooltip />}
         />
-        <Bar dataKey="inflow" name="Inflow" fill="var(--info)" radius={3} />
-        <Bar dataKey="mrr" name="MRR" fill="var(--success)" radius={3} />
-        <Bar dataKey="payout" name="Payout" fill="var(--warning)" radius={3} />
+        <Bar dataKey="inflow" name="Inflow" fill="var(--info)" radius={0} />
+        <Bar dataKey="mrr" name="MRR" fill="var(--success)" radius={0} />
+        <Bar dataKey="payout" name="Payout" fill="var(--warning)" radius={0} />
       </BarChart>
     </ResponsiveContainer>
   );

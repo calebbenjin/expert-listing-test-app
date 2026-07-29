@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const SalesOverviewChart = dynamic(
   () => import("@/components/dashboard/sales-overview-chart"),
-  { ssr: false, loading: () => <div className="h-65" /> }
+  { ssr: false, loading: () => <div className="h-65" /> },
 );
 
 const ranges = [
@@ -42,45 +42,51 @@ export function SalesOverviewCard() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-sm sm:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="rounded-2xl border border-border bg-card transition-shadow hover:shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-4 p-5 sm:px-6 sm:pt-5 sm:pb-2">
         <div>
           <h2 className="text-lg font-semibold sm:text-xl">Sales Overview</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             {data.rangeLabel}
           </p>
         </div>
-        <Button variant="outline" size="sm" className="rounded-full">
-          View Transactions
-        </Button>
-      </div>
 
-      <div className="mt-4 flex justify-end">
-        <div className="inline-flex items-center gap-1 rounded-full bg-muted p-1">
-          {ranges.map((range) => (
-            <button
-              key={range.id}
-              type="button"
-              onClick={() => setActiveRange(range.id)}
-              className={cn(
-                "rounded-full px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-                activeRange === range.id
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {range.label}
-            </button>
-          ))}
+        <div className="flex-col col-end sm:flex sm:items-end">
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-full px-9 py-6 text-sm"
+          >
+            View Transactions
+          </Button>
+          <div className="mt-4 flex justify-end">
+            <div className="inline-flex items-center gap-4 rounded-full bg-white p-1">
+              {ranges.map((range) => (
+                <button
+                  key={range.id}
+                  type="button"
+                  onClick={() => setActiveRange(range.id)}
+                  className={cn(
+                    "rounded-md px-6 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                    activeRange === range.id
+                      ? "text-foreground bg-muted"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {range.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_320px] lg:items-center">
+      <div className="grid gap-6 lg:grid-cols-2 lg:items-center border-t border-border p-5 sm:p-6">
         <div className="relative">
           <button
             type="button"
             aria-label="Scroll chart left"
-            className="absolute top-1/2 left-0 z-10 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:text-foreground sm:flex"
+            className="absolute top-1/2 left-0 z-10 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-muted-foreground/30 text-muted-foreground shadow-sm transition-colors hover:text-foreground sm:flex"
           >
             <ChevronLeft className="size-4" />
           </button>
@@ -88,7 +94,7 @@ export function SalesOverviewCard() {
           <button
             type="button"
             aria-label="Scroll chart right"
-            className="absolute top-1/2 right-0 z-10 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:text-foreground sm:flex"
+            className="absolute top-1/2 -right-4 z-10 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-muted-foreground/30 text-muted-foreground shadow-sm transition-colors hover:text-foreground sm:flex"
           >
             <ChevronRight className="size-4" />
           </button>

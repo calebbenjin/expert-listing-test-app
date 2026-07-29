@@ -18,18 +18,18 @@ function StatTileImpl({ stat }: { stat: SalesStat }) {
     <div className="min-w-0 rounded-xl border border-border bg-card p-4">
       <p
         className={cn(
-          "wrap-break-word text-sm font-semibold tracking-tight tabular-nums",
-          amountColor[stat.color]
+          "wrap-break-word text-xl font-semibold tracking-tight tabular-nums",
+          amountColor[stat.color],
         )}
       >
         {formatNaira(stat.amount)}
       </p>
       <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-        <span className="text-sm text-muted-foreground">{stat.label}</span>
+        <span className="text-xs">{stat.label}</span>
         <span
           className={cn(
-            "inline-flex shrink-0 items-center gap-0.5 rounded-full px-1.5 py-0.5 text-xs font-medium",
-            isUp ? "bg-success/10 text-success" : "bg-danger/10 text-danger"
+            "inline-flex shrink-0 items-center gap-0.5 rounded-full px-1 py-1 text-xs font-medium",
+            isUp ? "bg-success/10 text-success" : "bg-danger/10 text-danger",
           )}
         >
           {isUp ? (
@@ -37,6 +37,13 @@ function StatTileImpl({ stat }: { stat: SalesStat }) {
           ) : (
             <ArrowDownRight className="size-3" />
           )}
+        </span>
+        <span
+          className={cn(
+            "inline-flex shrink-0 items-center gap-0.5 text-xs font-medium",
+            isUp ? "text-success" : "text-danger",
+          )}
+        >
           {stat.deltaPercent}%
         </span>
       </div>
