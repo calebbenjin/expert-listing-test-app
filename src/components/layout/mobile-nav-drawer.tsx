@@ -1,26 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  MessageSquare,
-  RefreshCw,
-  FileText,
-  Wallet,
-  Store,
-  X,
-} from "lucide-react";
+import { X } from "lucide-react";
 
 import { navItems } from "./nav-items";
-
-const headerIcons = [
-  { id: "chat", icon: MessageSquare, label: "Messages" },
-  { id: "sync", icon: RefreshCw, label: "Sync" },
-  { id: "docs", icon: FileText, label: "Documents" },
-  { id: "wallet", icon: Wallet, label: "Wallet" },
-  { id: "store", icon: Store, label: "Store" },
-];
+import { headerIcons } from "./header-icons";
 
 export function MobileNavDrawer({
   open,
@@ -93,14 +80,20 @@ export function MobileNavDrawer({
                 Quick actions
               </p>
               <div className="flex flex-wrap gap-1 px-1">
-                {headerIcons.map(({ id, icon: Icon, label }) => (
+                {headerIcons.map(({ id, src, label }) => (
                   <button
                     key={id}
                     type="button"
                     aria-label={label}
-                    className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-muted"
                   >
-                    <Icon className="size-[18px]" />
+                    <Image
+                      src={src}
+                      alt=""
+                      width={18}
+                      height={18}
+                      className="opacity-60 brightness-0"
+                    />
                   </button>
                 ))}
               </div>
