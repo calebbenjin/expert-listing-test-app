@@ -1,16 +1,17 @@
 "use client";
 
 import { memo } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Home, Users } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { OverviewSummarySkeleton } from "@/components/dashboard/skeletons";
 import { useOverviewSummary } from "@/hooks/queries/use-overview-summary";
 
 const icons = {
-  "listings-overview": Home,
-  "user-overview": Users,
+  "listings-overview": "/icons/solar_home-linear.png",
+  "user-overview": "/icons/profile-icon.png",
 } as const;
 
 function OverviewSummaryCardImpl({
@@ -19,7 +20,7 @@ function OverviewSummaryCardImpl({
   endpoint: "listings-overview" | "user-overview";
 }) {
   const { data, isPending, isError, refetch } = useOverviewSummary(endpoint);
-  const Icon = icons[endpoint];
+  const iconSrc = icons[endpoint];
 
   if (isPending) return <OverviewSummarySkeleton />;
 
@@ -35,11 +36,17 @@ function OverviewSummaryCardImpl({
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-sm">
-      <div className="flex items-center justify-between">
+    <div className="rounded-2xl border border-border bg-card transition-shadow hover:shadow-sm">
+      <div className="flex items-center justify-between bg-foreground/5 p-4 rounded-t-2xl">
         <div className="flex items-center gap-2">
-          <Icon className="size-5 text-info" />
-          <h3 className="font-semibold">{data.title}</h3>
+          <Image
+            src={iconSrc}
+            alt=""
+            width={25}
+            height={25}
+            className="opacity-70"
+          />
+          <h3 className="font-medium text-base">{data.title}</h3>
         </div>
         <Link
           href={data.href}
@@ -49,11 +56,11 @@ function OverviewSummaryCardImpl({
           <ChevronRight className="size-4" />
         </Link>
       </div>
-      <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-4">
+      <div className="grid grid-cols-3 gap-x-3 gap-y-4 p-4">
         {data.metrics.map((metric) => (
           <div key={metric.label}>
-            <p className="text-sm text-muted-foreground">{metric.label}</p>
-            <p className="mt-0.5 text-xl font-semibold">{metric.value}</p>
+            <p className="text-sm">{metric.label}</p>
+            <p className="mt-1 text-2xl font-semibold">{metric.value}</p>
           </div>
         ))}
       </div>
