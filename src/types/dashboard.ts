@@ -40,10 +40,14 @@ export interface SpotlightTab {
   label: string;
 }
 
+export interface SpotlightImage {
+  url: string;
+  alt: string;
+}
+
 export interface SpotlightCard {
   id: string;
-  imageUrl: string;
-  imageAlt: string;
+  images: SpotlightImage[];
   tabs?: SpotlightTab[];
   activeTabId?: string;
   eyebrow: string;

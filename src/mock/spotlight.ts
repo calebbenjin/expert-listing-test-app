@@ -3,16 +3,32 @@ import type { SpotlightCard } from "@/types/dashboard";
 export const spotlight: SpotlightCard[] = [
   {
     id: "site-visits",
-    imageUrl: "https://picsum.photos/id/1067/900/1100",
-    imageAlt: "Glass office towers viewed from below",
+    images: [
+      {
+        url: "https://picsum.photos/id/1067/900/1100",
+        alt: "Glass office towers viewed from below",
+      },
+      {
+        url: "https://picsum.photos/id/1041/900/1100",
+        alt: "City skyline at dusk",
+      },
+    ],
     eyebrow: "TOTAL SITE VISITS",
     statValue: "11k",
     showCarouselControls: false,
   },
   {
     id: "most-clicked",
-    imageUrl: "https://picsum.photos/id/164/900/1100",
-    imageAlt: "Modern apartment building facade",
+    images: [
+      {
+        url: "https://picsum.photos/id/164/900/1100",
+        alt: "Modern apartment building facade",
+      },
+      {
+        url: "https://picsum.photos/id/160/900/1100",
+        alt: "Waterfront building exterior",
+      },
+    ],
     tabs: [
       { id: "live", label: "Live Listings" },
       { id: "all", label: "All Listings" },
@@ -26,8 +42,16 @@ export const spotlight: SpotlightCard[] = [
   },
   {
     id: "most-watchlisted",
-    imageUrl: "https://picsum.photos/id/1076/900/1100",
-    imageAlt: "Residential apartment block with balconies",
+    images: [
+      {
+        url: "https://picsum.photos/id/1076/900/1100",
+        alt: "Residential apartment block with balconies",
+      },
+      {
+        url: "https://picsum.photos/id/1078/900/1100",
+        alt: "Apartment building courtyard view",
+      },
+    ],
     tabs: [
       { id: "live", label: "Live Listings" },
       { id: "all", label: "All Listings" },
